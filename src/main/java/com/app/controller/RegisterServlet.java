@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
             query.setParameter("username", username);
 
-            List temp = query.getResultList();
+            List<User> temp = query.getResultList();
             if (temp.isEmpty()) {
                 em.getTransaction().begin();
                 User user = new User(username, pass, role);
@@ -35,7 +35,6 @@ public class RegisterServlet extends HttpServlet {
             } else {
                 throw new Exception("Username already exist");
             }
-            System.out.println("Success");
             resp.sendRedirect(req.getContextPath() + "/views/login.jsp?msg=success");
         } catch (Exception e) {
             e.printStackTrace();
