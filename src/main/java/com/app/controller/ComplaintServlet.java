@@ -31,11 +31,9 @@ public class ComplaintServlet extends HttpServlet {
             em.getTransaction().begin();
             em.persist(cmp);
             em.getTransaction().commit();
-            System.out.println("inside try");
+
 
         } catch (Exception e) {
-            System.out.println("inside catch");
-            System.out.println(e.getMessage());
             e.printStackTrace();
 
         }
