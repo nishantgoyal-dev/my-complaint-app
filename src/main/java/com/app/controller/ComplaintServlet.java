@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.complaint.system.model.Complaint;
 import com.complaint.system.model.User;
@@ -38,7 +39,25 @@ public class ComplaintServlet extends HttpServlet {
             e.printStackTrace();
 
         }
-        resp.sendRedirect(req.getContextPath() +"/views/user_dashboard.jsp?msg=complaint_raised");
+        resp.sendRedirect(req.getContextPath() + "/views/user_dashboard.jsp?msg=complaint_raised");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        var session = req.getSession();
+        var user = session.getAttribute("user");
+        List<Complaint> complaintList=null;
+        try (var em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+            complaintList = em.createQuery("SELECT c FROM Complaint c WHERE c.user = :user", Complaint.class)
+                    .setParameter("user", user).getResultList();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        req.setAttribute("complaintList", complaintList);
+        req.getRequestDispatcher("views/view_my_complaints.jsp").forward(req, resp);
     }
 
 }

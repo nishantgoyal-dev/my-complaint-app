@@ -17,7 +17,7 @@
         <p>Role: ${sessionScope.user.role}</p>
         <nav>
             <a href="raise_complaint.jsp">Raise New Complaint</a> | 
-            <a href="view_my_complaints.jsp">My Complaints</a> | 
+            <a href="${pageContext.request.contextPath}/raise_complaint">My Complaints</a> | 
             <a href="${pageContext.request.contextPath}/logout">Logout</a>
         </nav>
     </header>
