@@ -22,8 +22,8 @@
         <br>
         <label>Role</label>
         <select name="role">
-            <option value="STUDENT">Student</option>
-            <option value="ADMIN">Admin</option>
+            <option value="CLIENT">CLIENT</option>
+            <option value="ADMIN">ADMIN</option>
         </select>
 
         <br>
@@ -31,7 +31,7 @@
 
 
     </form>
-    <p>Already have an account? <a href="login.jsp">Login here</a></p>
+    <p>Already have an account? <a href="${pageContext.request.contextPath}/auth/login.jsp">Login here</a></p>
 </body>
 
 </html>

@@ -37,7 +37,8 @@ public class ComplaintServlet extends HttpServlet {
             e.printStackTrace();
 
         }
-        resp.sendRedirect(req.getContextPath() + "/views/user_dashboard.jsp?msg=complaint_raised");
+        System.out.println("here");
+        resp.sendRedirect(req.getContextPath() + "/client/user_dashboard.jsp?msg=complaint_raised");
     }
 
     @Override
@@ -55,7 +56,7 @@ public class ComplaintServlet extends HttpServlet {
             e.printStackTrace();
         }
         req.setAttribute("complaintList", complaintList);
-        req.getRequestDispatcher("views/view_my_complaints.jsp").forward(req, resp);
+        req.getRequestDispatcher("client/view_my_complaints.jsp").forward(req, resp);
     }
 
 }

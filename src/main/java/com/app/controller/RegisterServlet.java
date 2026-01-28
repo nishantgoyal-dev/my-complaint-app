@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.complaint.system.model.User;
+import com.complaint.system.model.UserRole;
 import com.complaint.system.util.JPAUtil;
 
 import jakarta.persistence.TypedQuery;
@@ -21,6 +22,7 @@ public class RegisterServlet extends HttpServlet {
         String username = req.getParameter("username");
         String pass = req.getParameter("password");
         String role = req.getParameter("role");
+        UserRole userRole = UserRole.valueOf(role.toUpperCase());
 
         try (var em = JPAUtil.getEntityManagerFactory().createEntityManager();) {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
@@ -29,16 +31,16 @@ public class RegisterServlet extends HttpServlet {
             List<User> temp = query.getResultList();
             if (temp.isEmpty()) {
                 em.getTransaction().begin();
-                User user = new User(username, pass, role);
+                User user = new User(username, pass, userRole);
                 em.persist(user);
                 em.getTransaction().commit();
             } else {
                 throw new Exception("Username already exist");
             }
-            resp.sendRedirect(req.getContextPath() + "/views/login.jsp?msg=success");
+            resp.sendRedirect(req.getContextPath() + "/auth/login.jsp?msg=success");
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(req.getContextPath() + "/views/register.jsp?error=failed");
+            resp.sendRedirect(req.getContextPath() + "/auth/register.jsp?error=failed");
         }
 
     }

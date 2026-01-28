@@ -31,10 +31,10 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
             UserRole role = user.getRole();
             if (user.getRole() == UserRole.ADMIN) {
-                resp.sendRedirect(req.getContextPath() + "/admin_dashboard");
+                resp.sendRedirect(req.getContextPath() + "/admin/admin_dashboard");
             } else {
                 // This now works for any standard user (Citizen, Student, Employee, etc.)
-                resp.sendRedirect(req.getContextPath() + "/views/user_dashboard.jsp");
+                resp.sendRedirect(req.getContextPath() + "/client/user_dashboard.jsp");
             }
         } catch (NoResultException e) {
             out.print("id or password wrong");

@@ -9,6 +9,8 @@
 </head>
 <body>
     <h1>Welcome to Complaint portal</h1>
-    <a href="views/register.jsp">register</a>
+    <a href="auth/register.jsp">register</a>
+    <a href="auth/login.jsp">login</a>
+    
 </body>
 </html>
