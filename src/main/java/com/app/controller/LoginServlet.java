@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
                     .setParameter("username", username).setParameter("password", pass).getSingleResult();
             var session = req.getSession();
             session.setAttribute("user", user);
-            UserRole role = user.getRole();
+            // UserRole role = user.getRole();
             if (user.getRole() == UserRole.ADMIN) {
                 resp.sendRedirect(req.getContextPath() + "/admin/admin_dashboard");
             } else {

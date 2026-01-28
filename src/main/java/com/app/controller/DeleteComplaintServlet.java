@@ -2,6 +2,7 @@ package com.app.controller;
 
 import java.io.IOException;
 
+import com.app.service.ComplaintService;
 import com.complaint.system.model.Complaint;
 import com.complaint.system.model.ComplaintStatus;
 import com.complaint.system.model.User;
@@ -15,29 +16,20 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/delete_complaint")
 public class DeleteComplaintServlet extends HttpServlet {
+    private ComplaintService complaintService = new ComplaintService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idStr = req.getParameter("id");
+        User user = (User) req.getSession().getAttribute("user");
 
-        var id = req.getParameter("id");
-        if (id != null) {
-            try (var em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
-                var complaint = em.find(Complaint.class, Integer.parseInt(id));
-                User loggedInUser = (User) req.getSession().getAttribute("user");
-                em.getTransaction().begin();
-                if (complaint != null && complaint.getUser().getId() == loggedInUser.getId()) {
-                    complaint.setStatus(ComplaintStatus.WITHDRAWN);
-                    em.getTransaction().commit();
-                } else {
-                    // Someone is trying to withdraw someone else's complaint!
-                    em.getTransaction().rollback();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (idStr != null && user != null) {
+            int complaintId = Integer.parseInt(idStr);
+            
+            // This one line replaces 15 lines of code!
+            complaintService.withdrawComplaint(complaintId, user.getId());
         }
+        
         resp.sendRedirect(req.getContextPath() + "/raise_complaint");
     }
-
 }

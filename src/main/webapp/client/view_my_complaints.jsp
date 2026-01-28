@@ -19,7 +19,7 @@
                     <th>date</th>
                     <th>Action</th>
                 </tr>
-                <c:forEach var="comp" items="${complaintList}">
+                <c:forEach var="comp" items="${complaints}">
                     <tr>
                         <td>${comp.title}</td>
                         <td>${comp.status}</td>
