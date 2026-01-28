@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.complaint.system.model.User;
+import com.complaint.system.model.UserRole;
 import com.complaint.system.util.JPAUtil;
 
 import jakarta.persistence.NoResultException;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -27,17 +29,16 @@ public class LoginServlet extends HttpServlet {
                     .setParameter("username", username).setParameter("password", pass).getSingleResult();
             var session = req.getSession();
             session.setAttribute("user", user);
-            String role = user.getRole();
-            if (role.equals("STUDENT")) {
-                
-                resp.sendRedirect(req.getContextPath() + "/views/user_dashboard.jsp?msg=success");
-            }else{
-                // resp.sendRedirect(req.getContextPath() + "/views/admin_dashboard.jsp?msg=success");
-
+            UserRole role = user.getRole();
+            if (user.getRole() == UserRole.ADMIN) {
+                resp.sendRedirect(req.getContextPath() + "/admin_dashboard");
+            } else {
+                // This now works for any standard user (Citizen, Student, Employee, etc.)
+                resp.sendRedirect(req.getContextPath() + "/views/user_dashboard.jsp");
             }
-        }catch(NoResultException e){
+        } catch (NoResultException e) {
             out.print("id or password wrong");
-        } catch(Exception e){
+        } catch (Exception e) {
             out.print(e);
         }
 

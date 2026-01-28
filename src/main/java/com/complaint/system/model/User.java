@@ -2,6 +2,8 @@ package com.complaint.system.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,9 +22,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false) //student or admin
-    private String role ;
+    private UserRole role ;
 
 
     public User() {
@@ -35,7 +37,7 @@ public class User {
     public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = UserRole.CLIENT;
     }
 
 
@@ -72,12 +74,12 @@ public class User {
     }
 
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
