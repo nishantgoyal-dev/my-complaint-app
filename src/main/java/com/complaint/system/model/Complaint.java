@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,8 +24,8 @@ public class Complaint {
     String title;
 
     String description;
-
-    String status;
+    @Enumerated(EnumType.STRING)
+    ComplaintStatus status;
 
     @CreationTimestamp
     LocalDateTime createdAt;
@@ -33,18 +35,16 @@ public class Complaint {
     User user;
 
     public Complaint() {
-        this.status = "PENDING";
+        this.status = ComplaintStatus.PENDING;
     }
-    
 
     public Complaint(String title, String description, User user) {
         this.title = title;
         this.description = description;
         this.user = user;
-        this.status = "PENDING";
+        this.status = ComplaintStatus.PENDING;
 
     }
-
 
     public int getId() {
         return id;
@@ -70,11 +70,11 @@ public class Complaint {
         this.description = description;
     }
 
-    public String getStatus() {
+    public ComplaintStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ComplaintStatus status) {
         this.status = status;
     }
 
@@ -93,8 +93,5 @@ public class Complaint {
     public void setUser(User user) {
         this.user = user;
     }
-    
-
-    
 
 }

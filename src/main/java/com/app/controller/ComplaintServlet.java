@@ -47,7 +47,7 @@ public class ComplaintServlet extends HttpServlet {
         var user = session.getAttribute("user");
         List<Complaint> complaintList=null;
         try (var em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
-            complaintList = em.createQuery("SELECT c FROM Complaint c WHERE c.user = :user", Complaint.class)
+            complaintList = em.createQuery("SELECT c FROM Complaint c WHERE c.user = :user ORDER BY c.createdAt DESC", Complaint.class)
                     .setParameter("user", user).getResultList();
 
         } catch (Exception e) {
