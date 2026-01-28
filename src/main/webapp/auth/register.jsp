@@ -9,7 +9,7 @@
 
 <body>
     <h2>Create account</h2><br>
-<form action="/my-complaint-app/register" method="post">
+<form action="${pageContext.request.contextPath}/register" method="post">
         <label for="username">username</label>
         <input type="text" name="username" id="username" required>
 

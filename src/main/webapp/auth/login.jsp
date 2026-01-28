@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>User login</h2>
-    <form action="/my-complaint-app/login" method="post">
+    <form action="${pageContext.request.contextPath}/login" method="post">
         username: <input type="text"name = "username"><br>
         Password: <input type="password" name="password">
         <button type="submit">SUBMIT</button>
