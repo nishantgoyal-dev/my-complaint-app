@@ -3,10 +3,9 @@ package com.app.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.app.service.ComplaintService;
 import com.complaint.system.model.Complaint;
 import com.complaint.system.model.User;
-import com.complaint.system.util.JPAUtil;
-import com.app.service.ComplaintService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,20 +27,6 @@ public class ComplaintServlet extends HttpServlet {
         Complaint cmp = new Complaint(title, description, user);
         complaintService.raiseNewComplaint(cmp);
 
-
-        // try (var em = JPAUtil.getEntityManagerFactory().createEntityManager();) {
-
-        //     User managedUser = em.merge(user);
-        //     Complaint cmp = new Complaint(title, description, managedUser);
-        //     em.getTransaction().begin();
-        //     em.persist(cmp);
-        //     em.getTransaction().commit();
-
-
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-
-        // }
         
         resp.sendRedirect(req.getContextPath() + "/raise_complaint");
     }

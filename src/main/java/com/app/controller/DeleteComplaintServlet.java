@@ -3,10 +3,7 @@ package com.app.controller;
 import java.io.IOException;
 
 import com.app.service.ComplaintService;
-import com.complaint.system.model.Complaint;
-import com.complaint.system.model.ComplaintStatus;
 import com.complaint.system.model.User;
-import com.complaint.system.util.JPAUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +23,6 @@ public class DeleteComplaintServlet extends HttpServlet {
         if (idStr != null && user != null) {
             int complaintId = Integer.parseInt(idStr);
             
-            // This one line replaces 15 lines of code!
             complaintService.withdrawComplaint(complaintId, user.getId());
         }
         
