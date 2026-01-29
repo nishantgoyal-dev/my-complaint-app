@@ -26,4 +26,28 @@ public class ComplaintService {
             complaintDAO.update(c);
         }
     }
+
+    // In ComplaintService.java
+    public List<Complaint> getAdminDashboardList(int page) {
+        return complaintDAO.findPaginated(page, 10); // Show 10 per page
+    }
+
+    public long getTotalComplaintCount() {
+        return complaintDAO.countAll();
+    }
+
+    public long getTotalComplaintCountByStatus(ComplaintStatus status){
+        return complaintDAO.countByStatus(status);
+    }
+
+    public Complaint geComplaint(int id){
+        return complaintDAO.findById(id);
+    }
+    public void updateStatus(int complaintId, ComplaintStatus status) {
+    Complaint c = complaintDAO.findById(complaintId);
+    if (c != null) {
+        c.setStatus(status);
+        complaintDAO.update(c);
+    }
+}
 }

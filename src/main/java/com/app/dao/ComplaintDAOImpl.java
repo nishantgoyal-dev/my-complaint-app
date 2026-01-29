@@ -3,6 +3,7 @@ package com.app.dao;
 import java.util.List;
 
 import com.complaint.system.model.Complaint;
+import com.complaint.system.model.ComplaintStatus;
 import com.complaint.system.model.User;
 import com.complaint.system.util.JPAUtil;
 
@@ -62,5 +63,30 @@ public class ComplaintDAOImpl implements ComplaintDAO {
                     .getResultList();
         }
     }
+
+    // In ComplaintDAOImpl.java
+    public List<Complaint> findPaginated(int pageNumber, int pageSize) {
+        try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery("SELECT c FROM Complaint c ORDER BY c.createdAt DESC", Complaint.class)
+                    .setFirstResult((pageNumber - 1) * pageSize) // Where to start
+                    .setMaxResults(pageSize) // How many to take
+                    .getResultList();
+        }
+    }
+
+    public long countAll() {
+        try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery("SELECT COUNT(c) FROM Complaint c", Long.class)
+                    .getSingleResult();
+        }
+
+    }
+    public long countByStatus(ComplaintStatus status) {
+    try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+        return em.createQuery("SELECT COUNT(c) FROM Complaint c WHERE c.status = :status", Long.class)
+                 .setParameter("status", status)
+                 .getSingleResult();
+    }
+}
 
 }

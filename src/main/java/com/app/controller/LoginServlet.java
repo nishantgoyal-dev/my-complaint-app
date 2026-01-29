@@ -1,14 +1,11 @@
 package com.app.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import com.app.service.UserService;
 import com.complaint.system.model.User;
 import com.complaint.system.model.UserRole;
-import com.complaint.system.util.JPAUtil;
 
-import jakarta.persistence.NoResultException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +18,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
+        // PrintWriter out = resp.getWriter();
         String username = req.getParameter("username");
         String pass = req.getParameter("password");
         User user = userService.authenticate(username, pass);

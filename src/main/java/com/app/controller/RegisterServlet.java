@@ -1,13 +1,9 @@
 package com.app.controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.complaint.system.model.User;
-import com.complaint.system.model.UserRole;
-import com.complaint.system.util.JPAUtil;
+import com.app.service.UserService;
 
-import jakarta.persistence.TypedQuery;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,33 +12,21 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+    private UserService userService = new UserService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String pass = req.getParameter("password");
-        String role = req.getParameter("role");
-        UserRole userRole = UserRole.valueOf(role.toUpperCase());
 
-        try (var em = JPAUtil.getEntityManagerFactory().createEntityManager();) {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
-            query.setParameter("username", username);
+        // The Service handles the role enforcement and existence check
+        boolean success = userService.registerUser(username, pass);
 
-            List<User> temp = query.getResultList();
-            if (temp.isEmpty()) {
-                em.getTransaction().begin();
-                User user = new User(username, pass, userRole);
-                em.persist(user);
-                em.getTransaction().commit();
-            } else {
-                throw new Exception("Username already exist");
-            }
-            resp.sendRedirect(req.getContextPath() + "/auth/login.jsp?msg=success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.sendRedirect(req.getContextPath() + "/auth/register.jsp?error=failed");
+        if (success) {
+            resp.sendRedirect(req.getContextPath() + "/auth/login.jsp?msg=registered");
+        } else {
+            // Redirect back with a specific error message
+            resp.sendRedirect(req.getContextPath() + "/auth/register.jsp?error=exists");
         }
-
     }
-
 }
