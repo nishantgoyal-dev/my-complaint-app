@@ -12,40 +12,38 @@
 
         <body>
             <h2>All complaints</h2><br>
-            <table border="1">
-                <tr>
-                    <th>Subject</th>
-                    <th>status</th>
-                    <th>date</th>
-                    <th>Action</th>
-                </tr>
-                <c:forEach var="comp" items="${complaints}">
-                    <tr>
-                        <td>${comp.title}</td>
-                        <td>${comp.status}</td>
-                        <td>${comp.createdAt}</td>
-                        <td>
-                            <c:choose>
+<table>
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="comp" items="${complaints}">
+            <tr>
+                <td>${comp.title}</td>
+                <td><span class="status-${comp.status}">${comp.status}</span></td>
+                <td>${comp.createdAt}</td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/client/view_details?id=${comp.id}" class="btn">View</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
 
-                                <c:when test="${comp.status == 'PENDING'}">
-                                    <a href="${pageContext.request.contextPath}/delete_complaint?id=${comp.id}"
-                                        onclick="return confirm('Are you sure you want to withdraw this?')">
-                                        Withdraw
-                                    </a>
-                                </c:when>
-
-
-                                <c:otherwise>
-                                    <span style="color: gray; font-style: italic;">No actions
-                                        available</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
-                </c:forEach>
-
-            </table>
-
+<div class="pagination">
+    <c:if test="${currentPage > 1}">
+        <a href="?page=${currentPage - 1}">Previous</a>
+    </c:if>
+    <span>Page ${currentPage} of ${totalPages}</span>
+    <c:if test="${currentPage < totalPages}">
+        <a href="?page=${currentPage + 1}">Next</a>
+    </c:if>
+</div>
         </body>
 
         </html>

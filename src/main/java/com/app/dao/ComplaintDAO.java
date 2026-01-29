@@ -14,4 +14,6 @@ public interface ComplaintDAO {
     List<Complaint> findPaginated(int page, int i);
     long countAll();
     public long countByStatus(ComplaintStatus status);
+    long countByUserId(int userId);
+    List<Complaint> findByUserIdPaginated(int userId, int page, int pageSize);
 }

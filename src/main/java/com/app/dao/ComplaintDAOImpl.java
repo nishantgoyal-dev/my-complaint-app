@@ -81,12 +81,37 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
 
     }
+
     public long countByStatus(ComplaintStatus status) {
-    try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
-        return em.createQuery("SELECT COUNT(c) FROM Complaint c WHERE c.status = :status", Long.class)
-                 .setParameter("status", status)
-                 .getSingleResult();
+        try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery("SELECT COUNT(c) FROM Complaint c WHERE c.status = :status", Long.class)
+                    .setParameter("status", status)
+                    .getSingleResult();
+        }
     }
-}
+
+    @Override
+    public List<Complaint> findByUserIdPaginated(int userId, int pageNumber, int pageSize) {
+        try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(
+                    "SELECT c FROM Complaint c WHERE c.user.id = :uid ORDER BY c.createdAt DESC",
+                    Complaint.class)
+                    .setParameter("uid", userId)
+                    .setFirstResult((pageNumber - 1) * pageSize) // Skip previous pages
+                    .setMaxResults(pageSize) // Take only 10
+                    .getResultList();
+        }
+    }
+
+    @Override
+    public long countByUserId(int userId) {
+        try (EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(
+                    "SELECT COUNT(c) FROM Complaint c WHERE c.user.id = :uid",
+                    Long.class)
+                    .setParameter("uid", userId)
+                    .getSingleResult();
+        }
+    }
 
 }

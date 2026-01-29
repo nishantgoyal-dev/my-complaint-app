@@ -19,6 +19,7 @@ public class UpdateStatusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("complaintId");
         String statusStr = req.getParameter("newStatus");
+        String remarks = req.getParameter("remarks");
 
         if (idStr != null && statusStr != null) {
             
@@ -26,7 +27,7 @@ public class UpdateStatusServlet extends HttpServlet {
             ComplaintStatus newStatus = ComplaintStatus.valueOf(statusStr); // Converts "RESOLVED" to Enum
 
             
-            complaintService.updateStatus(id, newStatus);
+            complaintService.updateStatus(id, newStatus,remarks);
         }
         resp.sendRedirect(req.getContextPath() + "/admin/admin_dashboard");
     }

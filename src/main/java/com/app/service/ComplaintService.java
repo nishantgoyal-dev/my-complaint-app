@@ -36,18 +36,30 @@ public class ComplaintService {
         return complaintDAO.countAll();
     }
 
-    public long getTotalComplaintCountByStatus(ComplaintStatus status){
+    public long getTotalComplaintCountByStatus(ComplaintStatus status) {
         return complaintDAO.countByStatus(status);
     }
 
-    public Complaint geComplaint(int id){
+    public Complaint getComplaintById(int id) {
         return complaintDAO.findById(id);
     }
-    public void updateStatus(int complaintId, ComplaintStatus status) {
-    Complaint c = complaintDAO.findById(complaintId);
-    if (c != null) {
-        c.setStatus(status);
-        complaintDAO.update(c);
+
+    public void updateStatus(int complaintId, ComplaintStatus status, String remarks) {
+        Complaint c = complaintDAO.findById(complaintId);
+        if (c != null) {
+            c.setStatus(status);
+            c.setAdminRemarks(remarks); // Save the feedback
+            complaintDAO.update(c);
+        }
     }
-}
+
+    public long getTotalCountByUser(int userId) {
+        // Calls the DAO to get a simple COUNT from the database
+        return complaintDAO.countByUserId(userId);
+    }
+
+    public List<Complaint> getPaginatedClientComplaints(int userId, int page, int pageSize) {
+        // Calls the DAO to get 10 complaints starting at the correct offset
+        return complaintDAO.findByUserIdPaginated(userId, page, pageSize);
+    }
 }

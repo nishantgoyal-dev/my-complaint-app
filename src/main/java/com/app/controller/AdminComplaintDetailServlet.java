@@ -21,7 +21,7 @@ public class AdminComplaintDetailServlet extends HttpServlet {
         try {
 
             int id = Integer.parseInt(req.getParameter("id"));
-            Complaint cmp = complaintService.geComplaint(id);
+            Complaint cmp = complaintService.getComplaintById(id);
             req.setAttribute("complaint", cmp);
             req.getRequestDispatcher("/admin/view_detail.jsp").forward(req, resp);
         } catch (Exception e) {

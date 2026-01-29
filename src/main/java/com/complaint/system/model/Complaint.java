@@ -34,6 +34,9 @@ public class Complaint {
     @JoinColumn(name = "user_id")
     User user;
 
+    @Column(length = 1000) 
+    private String adminRemarks;
+
     public Complaint() {
         this.status = ComplaintStatus.PENDING;
     }
@@ -92,6 +95,14 @@ public class Complaint {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getAdminRemarks() {
+        return adminRemarks;
+    }
+
+    public void setAdminRemarks(String adminRemarks) {
+        this.adminRemarks = adminRemarks;
     }
 
 }

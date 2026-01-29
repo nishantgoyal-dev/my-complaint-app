@@ -27,21 +27,27 @@ public class ComplaintServlet extends HttpServlet {
         Complaint cmp = new Complaint(title, description, user);
         complaintService.raiseNewComplaint(cmp);
 
-        
         resp.sendRedirect(req.getContextPath() + "/raise_complaint");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
-        
         User user = (User) req.getSession().getAttribute("user");
-        
-        // The service already handles the "ORDER BY DESC" logic
-        List<Complaint> complaints = complaintService.getClientComplaints(user.getId());
-        
+        int page = 1;
+        String pageStr = req.getParameter("page");
+        if (pageStr != null && !pageStr.isEmpty()) {
+            page = Integer.parseInt(pageStr);
+        }
+
+        int pageSize = 10;
+        List<Complaint> complaints = complaintService.getPaginatedClientComplaints(user.getId(), page, pageSize);
+        long totalComplaints = complaintService.getTotalCountByUser(user.getId());
+        int totalPages = (int) Math.ceil((double) totalComplaints / pageSize);
+
         req.setAttribute("complaints", complaints);
-        // Note the updated path to the client folder
+        req.setAttribute("currentPage", page);
+        req.setAttribute("totalPages", totalPages);
+
         req.getRequestDispatcher("/client/view_my_complaints.jsp").forward(req, resp);
     }
 

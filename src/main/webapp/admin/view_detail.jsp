@@ -16,6 +16,8 @@
     <option value="RESOLVED" ${complaint.status.name() == 'RESOLVED' ? 'selected' : ''}>Resolved</option>
     <option value="REJECTED" ${complaint.status.name() == 'REJECTED' ? 'selected' : ''}>Rejected</option>
 </select>
+<label for="remarks">Admin Remarks:</label>
+<textarea name="remarks" id="remarks" rows="4" placeholder="Explain the decision...">${complaint.adminRemarks}</textarea>
         
         <button type="submit">Save Changes</button>
     </form>
